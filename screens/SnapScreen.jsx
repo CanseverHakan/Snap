@@ -1,13 +1,15 @@
 import React, { useRef } from 'react'
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, Text } from 'react-native'
 import { useEffect, useState } from 'react';
 import { Camera } from 'expo-camera';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useDispatch } from 'react-redux';
 import { addPics } from '../reducers/user';
+import { useIsFocused } from '@react-navigation/native';
 
 export default function SnapScreen() {
   const dispatch = useDispatch()
+  const isFocused = useIsFocused()
   const [hasPermission, setHasPermission] = useState(null)
   const [cameraType, setCameraType] = useState(Camera.Constants.Type.back)
   const [flashMode, setFlashMode] = useState(Camera.Constants.FlashMode.off)
@@ -15,15 +17,21 @@ export default function SnapScreen() {
 
 
   useEffect(() => {
-    (async () => {
+    const getCameraPermissions = async () => {
       const { status } = await Camera.requestCameraPermissionsAsync()
       setHasPermission(status === 'granted')
-    })()
+    }
+
+    getCameraPermissions()
   }, [])
 
 
-  if (hasPermission === null) {
+  if (hasPermission === null || !isFocused) {
     return <View />
+  }
+
+  if (hasPermission === false) {
+    return <Text>No access to camera</Text>;
   }
 
 
@@ -58,29 +66,34 @@ export default function SnapScreen() {
   const flashIconColor = flashMode === Camera.Constants.FlashMode.on ? 'yellow' : 'white';
 
   return (
-    <Camera style={{ flex: 1 }}
-      ref={cameraRef}
-      type={cameraType}
-      flashMode={flashMode}>
-      <FontAwesome
-        name="rotate-right"
-        style={styles.rotate}
-        size={50}
-        onPress={toggleCameraType}
-      />
-      <FontAwesome
-        name="circle-thin"
-        style={styles.button}
-        onPress={takePicture}
-        size={90}
-      />
-      <FontAwesome
-        name="flash"
-        style={{ ...styles.flash, color: flashIconColor }}
-        onPress={toggleFlashMode}
-        size={30}
-      />
-    </Camera>
+    <View style={styles.container}>
+      <Camera
+        ref={cameraRef}
+        type={cameraType}
+        flashMode={flashMode}
+        style={StyleSheet.absoluteFillObject}>
+        <FontAwesome
+          name="rotate-right"
+          style={styles.rotate}
+          color={'white'}
+          size={50}
+          onPress={toggleCameraType}
+        />
+        <FontAwesome
+          name="circle-thin"
+          style={styles.button}
+          color={'white'}
+          onPress={takePicture}
+          size={90}
+        />
+        <FontAwesome
+          name="flash"
+          style={{ ...styles.flash, color: flashIconColor }}
+          onPress={toggleFlashMode}
+          size={30}
+        />
+      </Camera>
+    </View>
   )
 }
 
@@ -107,6 +120,6 @@ const styles = StyleSheet.create({
   flash: {
     position: 'absolute',
     left: '93%',
-    marginTop: 15
+    marginTop: 15,
   },
 });

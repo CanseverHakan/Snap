@@ -13,10 +13,10 @@ export default function Scanner() {
         const getBarCodeScannerPermissions = async () => {
             const { status } = await BarCodeScanner.requestPermissionsAsync()
             setHasPermission(status === 'granted')
-        };
+        }
 
         getBarCodeScannerPermissions()
-    }, []);
+    }, [])
 
     const handleBarCodeScanned = ({ type, data }) => {
         setScanned(true);
@@ -44,9 +44,9 @@ export default function Scanner() {
                 style={StyleSheet.absoluteFillObject}
             />
             {scanned && (
-                <View>
-                    <Button title={'Tap to Scan Again'} onPress={() => setScanned(false)} />
+                <View style={styles.btnContainer}>
                     <Button title={'Open URL'} onPress={handleOpenURL} />
+                    <Button title={'Tap to Scan Again'} onPress={() => setScanned(false)} />
                 </View>
             )}
         </View>
@@ -59,5 +59,10 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
         alignItems: 'center',
+    },
+    btnContainer: {
+        justifyContent: 'space-between',
+        marginTop: 20,
+        gap: 600
     },
 })

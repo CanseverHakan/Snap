@@ -54,8 +54,8 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   image: {
-    width: 150,
-    height: 150,
+    width: 160,
+    height: 160,
     margin: 10,
   },
   logoutButton: {
