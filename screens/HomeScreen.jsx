@@ -16,7 +16,7 @@ export default function HomeScreen({ navigation }) {
   const handlePress = () => {
     if (isEmailValid()) {
       dispatch(addEmail(email));
-      navigation.navigate('TabNavigator', { screen: 'Snap' });
+      navigation.navigate('TabNavigator', { screen: 'Gallery' });
     } else {
       setErrorMsg('invalid email adress');
     }

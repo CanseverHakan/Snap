@@ -14,6 +14,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import HomeScreen from './screens/HomeScreen';
 import GalleryScreen from './screens/GalleryScreen';
 import SnapScreen from './screens/SnapScreen';
+import Scanner from './screens/Scanner';
 
 const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -45,6 +46,8 @@ const TabNavigator = () => {
             iconName = 'camera';
           } else if (route.name === 'Gallery') {
             iconName = 'image';
+          } else if (route.name === 'Scanner') {
+            iconName = 'qrcode';
           }
           return <FontAwesome name={iconName} size={30} color={color}></FontAwesome>;
         },
@@ -53,6 +56,7 @@ const TabNavigator = () => {
       })}
     >
       <Tab.Screen name="Snap" component={SnapScreen}></Tab.Screen>
+      <Tab.Screen name="Scanner" component={Scanner}></Tab.Screen>
       <Tab.Screen name="Gallery" component={GalleryScreen}></Tab.Screen>
     </Tab.Navigator>
   )
